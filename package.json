@@ -1,0 +1,26 @@
+{
+  "name": "masquerade-test-harness",
+  "version": "1.0.0",
+  "description": "A command line utility to test masquerade",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lu-ren/masquerade-test-harness.git"
+  },
+  "keywords": [
+    "test-harness"
+  ],
+  "author": "renren",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lu-ren/masquerade-test-harness/issues"
+  },
+  "homepage": "https://github.com/lu-ren/masquerade-test-harness#readme",
+  "dependencies": {
+    "prompt": "^1.0.0",
+    "socket.io-client": "^1.4.8"
+  }
+}
