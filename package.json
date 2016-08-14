@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/lu-ren/masquerade-test-harness#readme",
   "dependencies": {
+    "file-exists": "^2.0.0",
     "prompt": "^1.0.0",
     "socket.io-client": "^1.4.8"
   }
