@@ -19,19 +19,24 @@ let femaleSecretPath = 'female_secret.txt';
 
 let myUsername;
 let myGender;
+let myAccessToken;
 
 if (process.argv.length == 3) {
     if (process.argv[2] == '--reset') {
-        //Delete the fucking file here...
-        if (fileExists(secretPath)) {
-            fs.unlink(secretPath, (err) => {
-                if (err)
-                    return console.log(err);
-                console.log('Secret destroyed successfully');
-            });
-        } else {
-            console.log('No secret to destroy');
-        }
+        let secretPath;
+
+        if (fileExists(maleSecretPath))
+            secretPath = maleSecretPath;
+        else if (fileExists(femaleSecretPath))
+            secretPath = femaleSecretPath;
+        else
+            return console.log('No secret to destroy');
+
+        fs.unlink(secretPath, (err) => {
+            if (err)
+                return console.log(err);
+            console.log(secretPath + ' destroyed successfully');
+        });
     }
 }
 
@@ -46,10 +51,12 @@ prompt.get(['gender'], (err, result) => {
         secretPath = maleSecretPath;
         myUsername = 'Luren';
         myGender = 'male';
+        myAccessToken = maleAccessToken;
     } else {
         secretPath = femaleSecretPath;
         myUsername = 'Alice';
         myGender = 'female';
+        myAccessToken = femaleAccessToken;
     }
 
     if (fileExists(secretPath)) {
@@ -62,10 +69,7 @@ prompt.get(['gender'], (err, result) => {
         });
     } else {
         console.log('Secret does not exist. Sending access token...');
-        if (myGender == 'male')
-            user.access_token = maleAccessToken;
-        else
-            user.access_token = femaleAccessToken;
+        user.access_token = myAccessToken;
         client.emit('account.authenticate', user);
     }
 
