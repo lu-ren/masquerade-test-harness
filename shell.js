@@ -92,7 +92,7 @@ client.on('account.created', (message) => {
             return console.log(err);
         console.log('Secret ' + message + ' is saved to file ' + mySecretPath);
         let newMessage = {
-            lat: lag,
+            lat: lat,
             lon: lon
         }
         client.emit('room.find', newMessage);
