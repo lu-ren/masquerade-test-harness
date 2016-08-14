@@ -20,23 +20,27 @@ let femaleSecretPath = 'female_secret.txt';
 let myUsername;
 let myGender;
 let myAccessToken;
+let mySecretPath;
+let lat = 38.88;
+let lon = -77.17;
 
 if (process.argv.length == 3) {
     if (process.argv[2] == '--reset') {
-        let secretPath;
 
-        if (fileExists(maleSecretPath))
-            secretPath = maleSecretPath;
-        else if (fileExists(femaleSecretPath))
-            secretPath = femaleSecretPath;
-        else
-            return console.log('No secret to destroy');
-
-        fs.unlink(secretPath, (err) => {
-            if (err)
-                return console.log(err);
-            console.log(secretPath + ' destroyed successfully');
-        });
+        if (fileExists(maleSecretPath)) {
+            fs.unlink(maleSecretPath, (err) => {
+                if (err)
+                    return console.log(err);
+                console.log(maleSecretPath + ' destroyed successfully');
+            });
+        }
+        if (fileExists(femaleSecretPath)) {
+            fs.unlink(femaleSecretPath, (err) => {
+                if (err)
+                    return console.log(err);
+                console.log(femaleSecretPath + ' destroyed successfully');
+            });
+        }
     }
 }
 
@@ -45,23 +49,22 @@ prompt.start();
 prompt.get(['gender'], (err, result) => {
 
     let user = {};
-    let secretPath;
 
     if (result.gender == 'male') {
-        secretPath = maleSecretPath;
+        mySecretPath = maleSecretPath;
         myUsername = 'Luren';
         myGender = 'male';
         myAccessToken = maleAccessToken;
     } else {
-        secretPath = femaleSecretPath;
+        mySecretPath = femaleSecretPath;
         myUsername = 'Alice';
         myGender = 'female';
         myAccessToken = femaleAccessToken;
     }
 
-    if (fileExists(secretPath)) {
+    if (fileExists(mySecretPath)) {
         console.log('Secret exists. Sending secret...');
-        fs.readFile(secretPath, (err, data) => {
+        fs.readFile(mySecretPath, (err, data) => {
             if (err)
                 throw err;
             user.secret = data.toString();
@@ -72,23 +75,27 @@ prompt.get(['gender'], (err, result) => {
         user.access_token = myAccessToken;
         client.emit('account.authenticate', user);
     }
-
 });
 
 client.on('account.authenticated', (message) => {
     console.log('Account authenticated');
     let newMessage = {
-        lat: 38.88,
-        lon: -77.17
+        lat: lat,
+        lon: lon
     };
     client.emit('room.find', newMessage);
 });
 
 client.on('account.created', (message) => {
-    fs.writeFile(secretPath, message, (err) => {
+    fs.writeFile(mySecretPath, message, (err) => {
         if (err)
             return console.log(err);
-        console.log('Secret ' + message + ' is saved to file ' + secretPath);
+        console.log('Secret ' + message + ' is saved to file ' + mySecretPath);
+        let newMessage = {
+            lat: lag,
+            lon: lon
+        }
+        client.emit('room.find', newMessage);
     });
 });
 
